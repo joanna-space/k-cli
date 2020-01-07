@@ -1,12 +1,12 @@
 const fs = require('fs');
-const chalk = require('chalk');
+import * as chalk from 'chalk';
 
 module.exports = class K {
-    static dir = require.resolve('./data.json');
+    static dir = require.resolve('../store/data.json');
 
     private data: { [key: string]: string };
 
-    constructor (options: Array[string]){
+    constructor (options: Array<string>){
         this.data = this.read();
         const argvs = options.slice(2);
         switch (argvs[0]) {
@@ -46,7 +46,7 @@ module.exports = class K {
     }
 
     search(argvs: Array<string>): string {
-        const outputs = [];
+        const outputs: Array<string> = [];
         const dict = (argvs[0] || '').replace(/^-/, '') === 'a'
             ? Object.keys(this.data)
             : argvs;

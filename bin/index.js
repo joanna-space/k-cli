@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-require('../src/preface');
-const K = require('../src/index');
-const Help = require('../src/help');
+require('../dist/preface');
+const K = require('../dist/index');
+const Help = require('../dist/help');
 
 const help = new Help(process.argv);
 

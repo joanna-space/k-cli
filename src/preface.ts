@@ -1,4 +1,5 @@
-const chalk = require('chalk');
+import * as chalk from 'chalk';
+
 const words =
     '                                                                                                  \n' +
     '.___  .__                                                  ____.                                  \n' +

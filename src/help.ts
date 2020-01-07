@@ -4,7 +4,7 @@ type hInter = { is: boolean, idx?: number };
 
 class Help {
     static reg: string[] = ['help', 'h'];
-    static helpDict: object = {
+    static helpDict: { [key: string]: string } = {
         search: 'chalk`search: k {cyan.bold search} [key]`',
         add: 'chalk`add: k {cyan.bold add} [key]=[value]`',
     };
