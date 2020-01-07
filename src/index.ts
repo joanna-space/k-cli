@@ -17,6 +17,10 @@ module.exports = class K {
             case 'search':
                 this.printSearch(this.search(argvs.slice(1)));
                 break;
+            case 'remove':
+                this.removeKey(argvs.slice(1));
+                this.write(this.data);
+                break;
             default:
                 break;
         }
@@ -50,7 +54,7 @@ module.exports = class K {
         const dataKey: Array<string> = Object.keys(this.data);
         if ((argvs[0] || '').replace(/^-/, '') === 'a') {
             dataKey.forEach(argv => {
-                outputs.push(`${chalk.blueBright.bold(argv)}: ${this.data[argv]}`);
+                outputs.push(`${chalk.red(argv)}: ${this.data[argv]}`);
             });
         } else {
             //  支持不完全匹配
@@ -73,18 +77,29 @@ module.exports = class K {
                 });
             });
             dictMap.forEach(({ key, series: [pre, hl, end]}) => {
-                outputs.push(pre + chalk.blueBright.bold(hl) + end + ': ' + this.data[key]);
+                outputs.push(pre + chalk.red(hl) + end + ': ' + this.data[key]);
             });
         }
 
         return outputs;
     }
+
     printSearch(valueMap: string[]):void {
         this.prompt(chalk.red('* Your Highness *\n'));
         valueMap.forEach(v => {
             this.prompt(v + '\n');
         })
     }
+
+    removeKey(removeKeys: string[]): void {
+        removeKeys.forEach(rKey => {
+            if (rKey in this.data) {
+                delete this.data[rKey];
+            }
+        });
+        this.prompt('remove succeed.');
+    }
+
 
     prompt(msg: string): void {
         console.log(`${msg || 'error: Error'}`);
