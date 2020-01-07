@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx gulp"
+    "build": "npx gulp compile-ts",
+    "dev": "npx gulp watch-ts"
   },
   "keywords": [],
   "bin": {

@@ -50,7 +50,7 @@ module.exports = class K {
         const dataKey: Array<string> = Object.keys(this.data);
         if ((argvs[0] || '').replace(/^-/, '') === 'a') {
             dataKey.forEach(argv => {
-                outputs.push(`${argv}: ${this.data[argv]}`);
+                outputs.push(`${chalk.blueBright.bold(argv)}: ${this.data[argv]}`);
             });
         } else {
             //  支持不完全匹配
@@ -73,7 +73,7 @@ module.exports = class K {
                 });
             });
             dictMap.forEach(({ key, series: [pre, hl, end]}) => {
-                outputs.push(pre + chalk.magenta(hl) + end + ': ' + this.data[key]);
+                outputs.push(pre + chalk.blueBright.bold(hl) + end + ': ' + this.data[key]);
             });
         }
 
