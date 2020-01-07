@@ -6,7 +6,7 @@ module.exports = class K {
 
     private data: { [key: string]: string };
 
-    constructor (options: Array<string>){
+    constructor(options: Array<string>){
         this.data = this.read();
         const argvs = options.slice(2);
         switch (argvs[0]) {
@@ -15,7 +15,7 @@ module.exports = class K {
                 this.write(this.data);
                 break;
             case 'search':
-                this.prompt(this.search(argvs.slice(1)));
+                this.printSearch(this.search(argvs.slice(1)));
                 break;
             default:
                 break;
@@ -45,15 +45,45 @@ module.exports = class K {
         this.prompt('save succeed.');
     }
 
-    search(argvs: Array<string>): string {
+    search(argvs: Array<string>): Array<string> {
         const outputs: Array<string> = [];
-        const dict = (argvs[0] || '').replace(/^-/, '') === 'a'
-            ? Object.keys(this.data)
-            : argvs;
-        dict.forEach(argv => {
-            outputs.push(`${argv}: ${this.data[argv]}`);
-        });
-        return chalk.red('* Your Highness *\n') + outputs.join('\n');
+        const dataKey: Array<string> = Object.keys(this.data);
+        if ((argvs[0] || '').replace(/^-/, '') === 'a') {
+            dataKey.forEach(argv => {
+                outputs.push(`${argv}: ${this.data[argv]}`);
+            });
+        } else {
+            //  支持不完全匹配
+            const dictMap: Array<{ key: string, series: string[] }> = [];
+            argvs.forEach((argv) => {
+                dataKey.forEach((d: string) => {
+                    if (d === argv) {
+                        dictMap.push({ key: d, series: ['', d, ''] });
+                        return;
+                    }
+                    const startIdx = d.indexOf(argv);
+                    if (startIdx > -1) {
+                        const end = startIdx + argv.length;
+                        dictMap.push({ key: d, series: [
+                            d.substring(0, startIdx),
+                            d.substring(startIdx, end),
+                            d.substring(end),
+                        ]});
+                    }
+                });
+            });
+            dictMap.forEach(({ key, series: [pre, hl, end]}) => {
+                outputs.push(pre + chalk.magenta(hl) + end + ': ' + this.data[key]);
+            });
+        }
+
+        return outputs;
+    }
+    printSearch(valueMap: string[]):void {
+        this.prompt(chalk.red('* Your Highness *\n'));
+        valueMap.forEach(v => {
+            this.prompt(v + '\n');
+        })
     }
 
     prompt(msg: string): void {
