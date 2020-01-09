@@ -52,13 +52,15 @@ module.exports = class K {
     search(argvs: Array<string>): Array<string> {
         const outputs: Array<string> = [];
         const dataKey: Array<string> = Object.keys(this.data);
+        const dictMap: Array<{ key: string, series: string[] }> = [];
+
         if ((argvs[0] || '').replace(/^-/, '') === 'a') {
             dataKey.forEach(argv => {
-                outputs.push(`${chalk.red(argv)}: ${this.data[argv]}`);
+                dictMap.push({ key: argv, series: ['', this.data[argv], ''] });
             });
         } else {
             //  支持不完全匹配
-            const dictMap: Array<{ key: string, series: string[] }> = [];
+            // const dictMap: Array<{ key: string, series: string[] }> = [];
             argvs.forEach((argv) => {
                 dataKey.forEach((d: string) => {
                     if (d === argv) {
@@ -76,16 +78,15 @@ module.exports = class K {
                     }
                 });
             });
-            dictMap.forEach(({ key, series: [pre, hl, end]}) => {
-                outputs.push(pre + chalk.red(hl) + end + ': ' + this.data[key]);
-            });
         }
-
+        dictMap.forEach(({ key, series: [pre, hl, end]}) => {
+            outputs.push(pre + chalk.cyan.bold(hl) + end + ': ' + this.data[key]);
+        });
         return outputs;
     }
 
     printSearch(valueMap: string[]):void {
-        this.prompt(chalk.red('* Your Highness *\n'));
+        this.prompt(chalk.cyan.bold('* Your Highness *\n'));
         valueMap.forEach(v => {
             this.prompt(v + '\n');
         })
