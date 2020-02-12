@@ -10,5 +10,5 @@ const words =
     '                            \\/   \\/                                       \\/     \\/     \\/     \\/ \n' +
     '                                                                                                  \n' +
     '                                                                                                  \n';
-console.log(chalk.magenta(words));
+console.log(chalk.magenta.bold(words));
 console.log('Hi, Master!\n');

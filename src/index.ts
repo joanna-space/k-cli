@@ -34,14 +34,7 @@ module.exports = class K {
                     throw new Error();
                 }
                 const kv = arg.split('=');
-                if (kv[0] in this.data) {
-                    const originV = this.data[kv[0]];
-                    if (!originV.includes(kv[1])) {
-                        this.data[kv[0]] = [this.data[kv[0]], kv[1]].join(' ');
-                    }
-                } else {
-                    this.data[kv[0]] = kv[1];
-                }
+                this.data[kv[0]] = kv[1];
             });
         } catch(e) {
             return;
@@ -56,7 +49,7 @@ module.exports = class K {
 
         if ((argvs[0] || '').replace(/^-/, '') === 'a') {
             dataKey.forEach(argv => {
-                dictMap.push({ key: argv, series: ['', this.data[argv], ''] });
+                dictMap.push({ key: argv, series: ['', argv, ''] });
             });
         } else {
             //  支持不完全匹配
